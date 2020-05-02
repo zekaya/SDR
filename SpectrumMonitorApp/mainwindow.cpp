@@ -61,8 +61,6 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-//    dt.stop();
-//    dt.quit();
     emit stopDisplayThread();
 }
 
