@@ -75,7 +75,7 @@ public:
 	bool get_lo_chan(struct iio_context *ctx, enum iodev d, struct iio_channel **chn);
 	bool cfg_ad9361_streaming_ch(struct iio_context *ctx, struct stream_cfg *cfg, enum iodev type, int chid);
 	int CreateReceiver(char* usbCtx, int bufferSize);
-    void pollRXBuffer(double* data);
+    void pollRXBuffer(short* data);
     void updateBufferSize(int bufSize);
 };
 

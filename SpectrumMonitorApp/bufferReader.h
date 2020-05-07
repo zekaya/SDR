@@ -23,6 +23,7 @@ public:
 
 signals:
     void sendToDemod(short* data, int size);
+    void sendToSpectrum(short* data, int size);
 
 private slots:
     void bwValueChanged(double newBWVal);

@@ -252,7 +252,7 @@ int ADRV9009Receiver::CreateReceiver(char* usbCtx, int bufferSize)
 	return 0;
 }
 
-void ADRV9009Receiver::pollRXBuffer(double* data, bool isVerbose)
+void ADRV9009Receiver::pollRXBuffer(short* data, bool isVerbose)
 {
 	ssize_t nbytes_rx;
 	char *p_dat, *p_end;

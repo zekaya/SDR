@@ -79,7 +79,7 @@ public:
     bool get_lo_chan(struct iio_context *ctx, struct iio_channel **chn);
     bool cfg_adrv9009_streaming_ch(struct iio_context *ctx, struct stream_cfg *cfg, int chid);
 	int CreateReceiver(char* usbCtx, int bufferSize);
-	void pollRXBuffer(double* data, bool isVerbose);
+    void pollRXBuffer(short* data, bool isVerbose);
 };
 
 #endif /* ADRV9009_RECEIVER_H_ */

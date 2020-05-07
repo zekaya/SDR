@@ -1,56 +1,55 @@
-#ifndef DISPLAYTHREAD_H
-#define DISPLAYTHREAD_H
+#ifndef SPECTRUMMONITOR_H
+#define SPECTRUMMONITOR_H
 
 #include <QThread>
 #include <QtDebug>
 
 #include <string>
 #include "fft.h"
-#include "pluto_receiver.h"
-//#include "adrv9009_receiver.h"
 #include "ui_mainwindow.h"
 
-class SpectrumMonitorThread : public QThread
+#define KHZ(x) ((long long)(x*1000.0 + .5))
+#define MHZ(x) ((long long)(x*1000000.0 + .5))
+#define GHZ(x) ((long long)(x*1000000000.0 + .5))
+
+class SpectrumMonitor : public QThread
 {
     Q_OBJECT
 
 public:
     void initialize(Ui_MainWindow* mw);
     void stop();
-    void setBW(double bwval);
     void setFS(double fsval);
     void setFC(double fcval);
     void setFFTSize(int fftSizeVal);
-    void setURI(char* urival);
 
 signals:
     void valueUpdate();
 
 private slots:
     void fftValueChanged(int newFFTVal);
-    void bwValueChanged(double newBWVal);
     void fsValueChanged(double newFSVal);
     void fcValueChanged(double newFCVal);
     void stopThread();
+    void fillBuffer(short* data, int size);
 
 private:
-//    ADRV9009Receiver rcvr;
-    PlutoReceiver rcvr;
     QVector<double> qv_x, qv_y;
     Ui_MainWindow* lmw = NULL;
-    double currentBW = 10;
-    double currentFS = 56;
-    double currentFC = 100;
+    double currentFS = 2.4;
+    double currentFC = 99.796;
     int fftSize1 = 4096;
     int fftSize2 = 4096;
-    char URI[15] = "ip:192.168.2.1";
-    double* data1;
-    double* data2;
+    short* data1;
+    short* data2;
+    double* fftResultArray1;
+    double* fftResultArray2;
     int currentDataPtr = 1;
     bool threadActive = true;
+    int bufferSize = 65536;
 
     void run();
 
 };
 
-#endif // DISPLAYTHREAD_H
+#endif // SPECTRUMMONITOR_H

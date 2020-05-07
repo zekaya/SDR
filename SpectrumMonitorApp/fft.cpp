@@ -6,9 +6,27 @@ FFTProcessor::FFTProcessor(void)
 
 }
 
-int FFTProcessor::fft(double* inputSamples, int nSize)
+int FFTProcessor::fft(short* inputSamples, double* returnSamples, int nSize)
 {
-	gsl_fft_complex_radix2_forward (inputSamples, 1, nSize);
+    int i = 0;
+    ogInputSamples = (double*)malloc(2*nSize*sizeof(double));
+
+    for(i=0;i<nSize;i++)
+    {
+        REAL(ogInputSamples,i) = (double)REAL(inputSamples,i);
+        IMAG(ogInputSamples,i) = (double)IMAG(inputSamples,i);
+    }
+
+    gsl_fft_complex_radix2_forward (ogInputSamples, 1, nSize);
+
+    for(i=0;i<nSize;i++)
+    {
+        REAL(returnSamples,i) = (double)REAL(ogInputSamples,i);
+        IMAG(returnSamples,i) = (double)IMAG(ogInputSamples,i);
+    }
+
+
+    free(ogInputSamples);
 
 	return 0;
 }

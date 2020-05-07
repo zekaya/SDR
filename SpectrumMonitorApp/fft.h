@@ -11,11 +11,13 @@
 
 class FFTProcessor
 {
+
+private:
+    double* ogInputSamples;
+
 public:
 	FFTProcessor(void);
-	int fft(double* inputSamples, int nSize);
+    int fft(short* inputSamples, double* returnSamples, int nSize);
 };
-
-
 
 #endif /* FFT_H_ */

@@ -14,32 +14,6 @@
    <string>Spectrum Monitor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>370</y>
-      <width>80</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>401</y>
-      <width>80</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Stop</string>
-    </property>
-   </widget>
    <widget class="QCustomPlot" name="plot" native="true">
     <property name="geometry">
      <rect>
@@ -50,242 +24,217 @@
      </rect>
     </property>
    </widget>
-   <widget class="QComboBox" name="fftComboBox">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>366</y>
-      <width>91</width>
-      <height>25</height>
+      <x>11</x>
+      <y>364</y>
+      <width>901</width>
+      <height>131</height>
      </rect>
     </property>
-    <property name="currentText">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>41</x>
-      <y>366</y>
-      <width>59</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>FFT Size:</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="spinbox_fs">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>397</y>
-      <width>91</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <double>2.500000000000000</double>
-    </property>
-    <property name="maximum">
-     <double>56.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="value">
-     <double>56.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>41</x>
-      <y>397</y>
-      <width>22</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Fs :</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="spinbox_fc">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>429</y>
-      <width>91</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <double>70.000000000000000</double>
-    </property>
-    <property name="maximum">
-     <double>6000.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>0.100000000000000</double>
-    </property>
-    <property name="value">
-     <double>100.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>41</x>
-      <y>429</y>
-      <width>91</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Center Freq. :</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="spinbox_bw">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>461</y>
-      <width>91</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <double>0.100000000000000</double>
-    </property>
-    <property name="maximum">
-     <double>50.000000000000000</double>
-    </property>
-    <property name="value">
-     <double>10.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>41</x>
-      <y>461</y>
-      <width>81</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Bandwidth :</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="spinbox_fstart">
-    <property name="geometry">
-     <rect>
-      <x>369</x>
-      <y>371</y>
-      <width>81</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <double>100.000000000000000</double>
-    </property>
-    <property name="maximum">
-     <double>6000.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>10.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>371</y>
-      <width>79</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start Freq. :</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="spinbox_fstop">
-    <property name="geometry">
-     <rect>
-      <x>369</x>
-      <y>403</y>
-      <width>81</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <double>100.000000000000000</double>
-    </property>
-    <property name="maximum">
-     <double>6000.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>10.000000000000000</double>
-    </property>
-    <property name="value">
-     <double>200.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>403</y>
-      <width>77</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Stop Freq. :</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_scan">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>441</y>
-      <width>101</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::RightToLeft</enum>
-    </property>
-    <property name="text">
-     <string>Scan Mode :</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="uriLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>370</y>
-      <width>113</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ip:192.168.2.1</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>370</y>
-      <width>31</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>URI: </string>
-    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>FFT Size:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="fftComboBox">
+       <property name="currentText">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Start Freq. :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3" colspan="2">
+      <widget class="QDoubleSpinBox" name="spinbox_fstart">
+       <property name="minimum">
+        <double>100.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>6000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>URI: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QLineEdit" name="uriLineEdit">
+       <property name="text">
+        <string>ip:192.168.2.1</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="text">
+        <string>Demodulate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Start</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Fs :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="spinbox_fs">
+       <property name="minimum">
+        <double>2.400000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>56.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>2.400000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Stop Freq. :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QDoubleSpinBox" name="spinbox_fstop">
+       <property name="minimum">
+        <double>100.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>6000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>10.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>200.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="7">
+      <widget class="QComboBox" name="demodComboBox"/>
+     </item>
+     <item row="1" column="8">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Stop</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Center Freq. :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QDoubleSpinBox" name="spinbox_fc">
+       <property name="decimals">
+        <number>2</number>
+       </property>
+       <property name="minimum">
+        <double>70.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>6000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.010000000000000</double>
+       </property>
+       <property name="value">
+        <double>99.799999999999997</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>RX Buf. Size :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
+      <widget class="QDoubleSpinBox" name="spinbox_fstop_2">
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="minimum">
+        <double>4096.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>65536.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>128.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>32368.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Bandwidth :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDoubleSpinBox" name="spinbox_bw">
+       <property name="minimum">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>50.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="6">
+      <widget class="QCheckBox" name="checkBox_scan">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Scan Mode :</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -404,6 +353,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>demodulateButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>715</x>
+     <y>404</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>691</x>
+     <y>404</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>demodComboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>demodTypeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>733</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>669</x>
+     <y>452</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>startApplication()</slot>
@@ -411,5 +392,8 @@
   <slot>fsValueChanged()</slot>
   <slot>fcValueChanged()</slot>
   <slot>bwValueChanged()</slot>
+  <slot>recordButtonClicked()</slot>
+  <slot>demodulateButtonClicked()</slot>
+  <slot>demodTypeChanged()</slot>
  </slots>
 </ui>

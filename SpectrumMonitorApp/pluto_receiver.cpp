@@ -232,7 +232,7 @@ int PlutoReceiver::CreateReceiver(char* usbCtx, int bufferSize)
 	return 0;
 }
 
-void PlutoReceiver::pollRXBuffer(double* data)
+void PlutoReceiver::pollRXBuffer(short* data)
 {
 	ssize_t nbytes_rx;
 	char *p_dat, *p_end;

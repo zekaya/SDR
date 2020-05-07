@@ -1,26 +1,29 @@
 QT += charts multimedia widgets printsupport
 
 HEADERS += \
-    SpectrumMonitorThread.h \
     adrv9009_receiver.h \
+    bufferReader.h \
+    demodulator.h \
     fft.h \
     mainwindow.h \
     pluto_receiver.h \
     qcustomplot.h \
-    xyseriesiodevice.h
+    spectrumMonitor.h
 
 SOURCES += \
-    SpectrumMonitorThread.cpp \
     adrv9009_receiver.cpp \
+    bufferReader.cpp \
+    demodulator.cpp \
     fft.cpp \
     main.cpp\
     mainwindow.cpp \
     pluto_receiver.cpp \
     qcustomplot.cpp \
-    xyseriesiodevice.cpp
+    spectrumMonitor.cpp
 
-target.path = $$[QT_INSTALL_EXAMPLES]/charts/audio
-INSTALLS += target
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
 
 unix|win32: LIBS += -lgsl
 

@@ -54,6 +54,7 @@ void BufferReader::run()
         // Read receive buffer
         rcvr.pollRXBuffer(ogData);
         emit sendToDemod(ogData,ogBufferSize);
+        emit sendToSpectrum(ogData,ogBufferSize);
     }
 }
 
