@@ -49,6 +49,8 @@ private:
     BufferReader br;
 
     bool isDemodulating = false;
+    QPen pen1;
+    QPen pen2;
 
 };
 

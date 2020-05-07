@@ -14,13 +14,29 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
-{
+{    
+    pen1.setStyle(Qt::DotLine);
+    pen1.setWidth(2);
+    pen1.setColor(Qt::red);
+
+    pen2.setStyle(Qt::DotLine);
+    pen2.setWidth(2);
+    pen2.setColor(Qt::green);
+
     ui->setupUi(this);
     ui->plot->addGraph();
     ui->plot->graph(0)->setLineStyle(QCPGraph::LineStyle::lsLine);
+    ui->plot->addGraph();
+    ui->plot->graph(1)->setPen(pen1);
+    ui->plot->addGraph();
+    ui->plot->graph(2)->setPen(pen2);
+    ui->plot->addGraph();
+    ui->plot->graph(3)->setPen(pen2);
+
     ui->plot->xAxis->setRange(0,255);
     ui->plot->yAxis->setScaleType(QCPAxis::stLogarithmic);
     ui->plot->yAxis->setRange(0,500);
+    ui->plot->axisRect()->setupFullAxesBox();
 
     ui->fftComboBox->addItem("128");
     ui->fftComboBox->addItem("256");
@@ -41,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // MainWindow to SpectrumMonitor connections
     connect(this,SIGNAL(fftValueToDisplayThread(int)),&sm,SLOT(fftValueChanged(int)));
     connect(this,SIGNAL(stopDisplayThread()),&sm,SLOT(stopThread()));
+    connect(this,SIGNAL(bwValueToDisplayThread(double)),&sm,SLOT(bwValueChanged(double)));
     connect(this,SIGNAL(fcValueToDisplayThread(double)),&sm,SLOT(fcValueChanged(double)));
     connect(this,SIGNAL(fsValueToDisplayThread(double)),&sm,SLOT(fsValueChanged(double)));
 

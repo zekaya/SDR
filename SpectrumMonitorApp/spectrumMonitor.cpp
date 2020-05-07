@@ -1,5 +1,4 @@
 #include "spectrumMonitor.h"
-#include <algorithm>
 
 void SpectrumMonitor::initialize(Ui_MainWindow* mw)
 {
@@ -13,8 +12,14 @@ void SpectrumMonitor::initialize(Ui_MainWindow* mw)
 
 void SpectrumMonitor::stop()
 {
-    qv_x.clear();
-    qv_y.clear();
+    qv1_x.clear();
+    qv1_y.clear();
+    qv2_x.clear();
+    qv2_y.clear();
+    qv3_x.clear();
+    qv3_y.clear();
+    qv4_x.clear();
+    qv4_y.clear();
     qDebug() << "Receiver shutdown.";
 }
 
@@ -53,8 +58,14 @@ void SpectrumMonitor::run()
         // Do the FFT
         fftProc.fft(ogData, ogFFTResult, ogFFTSize);
 
-        qv_x.clear();
-        qv_y.clear();
+        qv1_x.clear();
+        qv1_y.clear();
+        qv2_x.clear();
+        qv2_y.clear();
+        qv3_x.clear();
+        qv3_y.clear();
+        qv4_x.clear();
+        qv4_y.clear();
 
         //Plot FFT Results
         //Prepare plot vectors
@@ -66,20 +77,20 @@ void SpectrumMonitor::run()
 
             if (i<ogFFTSize/2)
             {
-                qv_x.append((MHZ(currentFC)-MHZ(currentFS)/2) + (MHZ(currentFS)/ogFFTSize)*(i+ogFFTSize/2));
+                qv1_x.append((MHZ(currentFC)-MHZ(currentFS)/2) + (MHZ(currentFS)/ogFFTSize)*(i+ogFFTSize/2));
             }
             else if(i>=ogFFTSize/2)
             {
-                qv_x.append((MHZ(currentFC)-MHZ(currentFS)/2) + (MHZ(currentFS)/ogFFTSize)*(i-ogFFTSize/2));
+                qv1_x.append((MHZ(currentFC)-MHZ(currentFS)/2) + (MHZ(currentFS)/ogFFTSize)*(i-ogFFTSize/2));
             }
 
-            qv_y.append(abs_val);
+            qv1_y.append(abs_val);
         }
 
         // Set plot range
         lmw->plot->xAxis->setRange((MHZ(currentFC)-MHZ(currentFS)/2),(MHZ(currentFC)+MHZ(currentFS)/2));
 
-        tmp_max_val = *std::max_element(qv_y.constBegin(), qv_y.constEnd());
+        tmp_max_val = *std::max_element(qv1_y.constBegin(), qv1_y.constEnd());
         min_val = 0;
 
         if(tmp_max_val > max_val)
@@ -89,13 +100,37 @@ void SpectrumMonitor::run()
 
         lmw->plot->yAxis->setRange(min_val,max_val);
 
+        qv2_x.append(MHZ(currentFC));
+        qv2_y.append(max_val);
+        qv2_x.append(MHZ(currentFC));
+        qv2_y.append(min_val);
+
+        qv3_x.append((MHZ(currentFC)-MHZ(currentBW)/2));
+        qv3_y.append(max_val);
+        qv3_x.append((MHZ(currentFC)-MHZ(currentBW)/2));
+        qv3_y.append(min_val);
+
+        qv4_x.append((MHZ(currentFC)+MHZ(currentBW)/2));
+        qv4_y.append(max_val);
+        qv4_x.append((MHZ(currentFC)+MHZ(currentBW)/2));
+        qv4_y.append(min_val);
+
         // Plot vectors
-        lmw->plot->graph(0)->setData(qv_x,qv_y);
+        lmw->plot->graph(0)->setData(qv1_x,qv1_y);
+        lmw->plot->graph(1)->setData(qv2_x,qv2_y);
+        lmw->plot->graph(2)->setData(qv3_x,qv3_y);
+        lmw->plot->graph(3)->setData(qv4_x,qv4_y);
+
 
         emit valueUpdate();
 
         QThread::usleep(40000);
     }
+}
+
+void SpectrumMonitor::setBW(double bwval)
+{
+    currentBW = bwval;
 }
 
 void SpectrumMonitor::setFS(double fsval)
@@ -133,6 +168,11 @@ void SpectrumMonitor::setFFTSize(int fftSizeVal)
 void SpectrumMonitor::fftValueChanged(int newFFTVal)
 {
     setFFTSize(newFFTVal);
+}
+
+void SpectrumMonitor::bwValueChanged(double newBWVal)
+{
+    setBW(newBWVal);
 }
 
 void SpectrumMonitor::fsValueChanged(double newFSVal)

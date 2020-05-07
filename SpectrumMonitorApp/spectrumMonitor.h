@@ -19,6 +19,7 @@ class SpectrumMonitor : public QThread
 public:
     void initialize(Ui_MainWindow* mw);
     void stop();
+    void setBW(double bwval);
     void setFS(double fsval);
     void setFC(double fcval);
     void setFFTSize(int fftSizeVal);
@@ -27,6 +28,7 @@ signals:
     void valueUpdate();
 
 private slots:
+    void bwValueChanged(double newBWVal);
     void fftValueChanged(int newFFTVal);
     void fsValueChanged(double newFSVal);
     void fcValueChanged(double newFCVal);
@@ -34,8 +36,9 @@ private slots:
     void fillBuffer(short* data, int size);
 
 private:
-    QVector<double> qv_x, qv_y;
+    QVector<double> qv1_x, qv1_y, qv2_x, qv2_y, qv3_x, qv3_y, qv4_x, qv4_y;
     Ui_MainWindow* lmw = NULL;
+    double currentBW = 1;
     double currentFS = 2.4;
     double currentFC = 99.796;
     int fftSize1 = 4096;
