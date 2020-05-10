@@ -30,6 +30,9 @@ signals:
     void startDemodulation();
     void stopDemodulation();
     void demodTypeToDemodThread(demodTypes);
+    void startfChanged(double);
+    void stopfChanged(double);
+    void scChanged(bool);
 
 private slots:
     void on_pushButton_clicked();
@@ -41,6 +44,9 @@ private slots:
     void fcValueChanged();
     void displayThreadValueUpdate();
     void demodTypeChanged();
+    void startFreqChanged();
+    void stopFreqChanged();
+    void scanChanged();
 
 private:
     Ui::MainWindow *ui;

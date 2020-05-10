@@ -26,6 +26,7 @@ public:
 
 signals:
     void valueUpdate();
+    void updateFc(double newFcVal);
 
 private slots:
     void bwValueChanged(double newBWVal);
@@ -34,6 +35,9 @@ private slots:
     void fcValueChanged(double newFCVal);
     void stopThread();
     void fillBuffer(short* data, int size);
+    void scanStartChanged(double newStartVal);
+    void scanStopChanged(double newStopVal);
+    void scanChanged(bool newScanVal);
 
 private:
     QVector<double> qv1_x, qv1_y, qv2_x, qv2_y, qv3_x, qv3_y, qv4_x, qv4_y;
@@ -50,6 +54,15 @@ private:
     int currentDataPtr = 1;
     bool threadActive = true;
     int bufferSize = 65536;
+
+    double scanIterateFc(double currentFc, double stepSize);
+    double scanCalculateStepSize();
+    void scanSetNewFc(double newFcVal);
+
+    bool scanActive = false;
+    double scanStartFreq = 100;
+    double scanStopFreq = 1000;
+    double scanOverlapRatio = 0; // Percent ratio of spectrum overlap in scan mode.
 
     void run();
 

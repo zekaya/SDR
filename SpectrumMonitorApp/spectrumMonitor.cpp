@@ -1,4 +1,5 @@
 #include "spectrumMonitor.h"
+//#include <QDebug>
 
 void SpectrumMonitor::initialize(Ui_MainWindow* mw)
 {
@@ -28,7 +29,7 @@ void SpectrumMonitor::run()
     int i,ogFFTSize;
     double real_val;
     double imag_val;
-    double abs_val, max_val, min_val,tmp_max_val;
+    double abs_val, max_val, min_val, tmp_max_val;
     short* ogData;
     double* ogFFTResult;
     FFTProcessor fftProc;
@@ -58,17 +59,26 @@ void SpectrumMonitor::run()
         // Do the FFT
         fftProc.fft(ogData, ogFFTResult, ogFFTSize);
 
-        qv1_x.clear();
-        qv1_y.clear();
-        qv2_x.clear();
-        qv2_y.clear();
-        qv3_x.clear();
-        qv3_y.clear();
-        qv4_x.clear();
-        qv4_y.clear();
-
         //Plot FFT Results
-        //Prepare plot vectors
+
+        // Set plot range
+        if(scanActive == false)
+        {
+            qv1_x.clear();
+            qv1_y.clear();
+            qv2_x.clear();
+            qv2_y.clear();
+            qv3_x.clear();
+            qv3_y.clear();
+            qv4_x.clear();
+            qv4_y.clear();
+            lmw->plot->xAxis->setRange((MHZ(currentFC)-MHZ(currentFS)/2),(MHZ(currentFC)+MHZ(currentFS)/2));
+        }
+        else
+        {
+            lmw->plot->xAxis->setRange(MHZ(scanStartFreq),MHZ(scanStopFreq));
+        }
+
         for (i = 0; i < ogFFTSize; i++)
         {
             real_val = REAL(ogFFTResult,i);
@@ -87,8 +97,8 @@ void SpectrumMonitor::run()
             qv1_y.append(abs_val);
         }
 
-        // Set plot range
-        lmw->plot->xAxis->setRange((MHZ(currentFC)-MHZ(currentFS)/2),(MHZ(currentFC)+MHZ(currentFS)/2));
+        // Plot vectors
+        lmw->plot->graph(0)->setData(qv1_x,qv1_y);
 
         tmp_max_val = *std::max_element(qv1_y.constBegin(), qv1_y.constEnd());
         min_val = 0;
@@ -99,32 +109,38 @@ void SpectrumMonitor::run()
         }
 
         lmw->plot->yAxis->setRange(min_val,max_val);
+        lmw->plot->xAxis->setTickLabels(true);
 
-        qv2_x.append(MHZ(currentFC));
-        qv2_y.append(max_val);
-        qv2_x.append(MHZ(currentFC));
-        qv2_y.append(min_val);
+        if(scanActive == false)
+        {
+            qv2_x.append(MHZ(currentFC));
+            qv2_y.append(max_val);
+            qv2_x.append(MHZ(currentFC));
+            qv2_y.append(min_val);
 
-        qv3_x.append((MHZ(currentFC)-MHZ(currentBW)/2));
-        qv3_y.append(max_val);
-        qv3_x.append((MHZ(currentFC)-MHZ(currentBW)/2));
-        qv3_y.append(min_val);
+            qv3_x.append((MHZ(currentFC)-MHZ(currentBW)/2));
+            qv3_y.append(max_val);
+            qv3_x.append((MHZ(currentFC)-MHZ(currentBW)/2));
+            qv3_y.append(min_val);
 
-        qv4_x.append((MHZ(currentFC)+MHZ(currentBW)/2));
-        qv4_y.append(max_val);
-        qv4_x.append((MHZ(currentFC)+MHZ(currentBW)/2));
-        qv4_y.append(min_val);
+            qv4_x.append((MHZ(currentFC)+MHZ(currentBW)/2));
+            qv4_y.append(max_val);
+            qv4_x.append((MHZ(currentFC)+MHZ(currentBW)/2));
+            qv4_y.append(min_val);
 
-        // Plot vectors
-        lmw->plot->graph(0)->setData(qv1_x,qv1_y);
-        lmw->plot->graph(1)->setData(qv2_x,qv2_y);
-        lmw->plot->graph(2)->setData(qv3_x,qv3_y);
-        lmw->plot->graph(3)->setData(qv4_x,qv4_y);
+            lmw->plot->graph(1)->setData(qv2_x,qv2_y);
+            lmw->plot->graph(2)->setData(qv3_x,qv3_y);
+            lmw->plot->graph(3)->setData(qv4_x,qv4_y);
+        }
+        else
+        {
+            scanSetNewFc(scanIterateFc(currentFC, scanCalculateStepSize()));
+//            qDebug() << "New Fc: " << MHZ(currentFC);
 
+        }
 
         emit valueUpdate();
-
-        QThread::usleep(40000);
+        QThread::usleep(100000);
     }
 }
 
@@ -205,3 +221,62 @@ void SpectrumMonitor::fillBuffer(short* newData, int newSize)
         memcpy(data2, newData, 2*fftSize2*sizeof(short));
     }
 }
+
+void SpectrumMonitor::scanStartChanged(double newStartVal)
+{
+    scanStartFreq = newStartVal;
+}
+
+void SpectrumMonitor::scanStopChanged(double newStopVal)
+{
+    scanStopFreq = newStopVal;
+}
+
+void SpectrumMonitor::scanChanged(bool newScanVal)
+{    
+    scanSetNewFc(scanStartFreq - (scanOverlapRatio*currentFS/200));
+
+    qv1_x.clear();
+    qv1_y.clear();
+    qv2_x.clear();
+    qv2_y.clear();
+    qv3_x.clear();
+    qv3_y.clear();
+    qv4_x.clear();
+    qv4_y.clear();
+
+    scanActive = newScanVal;
+}
+
+double SpectrumMonitor::scanIterateFc(double currentFc, double stepSize)
+{
+    double returnFreq = currentFC;
+
+    returnFreq = currentFc + stepSize;
+
+    if(returnFreq < scanStopFreq)
+    {
+        return returnFreq;
+    }
+    else
+    {
+        qv1_x.clear();
+        qv1_y.clear();
+        return scanStartFreq + currentFS;
+    }
+
+}
+
+double SpectrumMonitor::scanCalculateStepSize()
+{
+    return currentFS;
+}
+
+void SpectrumMonitor::scanSetNewFc(double newFcVal)
+{
+    setFC(newFcVal);
+    emit updateFc(newFcVal);
+}
+
+
+

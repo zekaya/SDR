@@ -34,9 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plot->graph(3)->setPen(pen2);
 
     ui->plot->xAxis->setRange(0,255);
-    ui->plot->yAxis->setScaleType(QCPAxis::stLogarithmic);
+//    ui->plot->yAxis->setScaleType(QCPAxis::stLogarithmic);
     ui->plot->yAxis->setRange(0,500);
     ui->plot->axisRect()->setupFullAxesBox();
+    ui->plot->xAxis->setSubTicks(true);
+    ui->plot->xAxis->setTickLabels(false);
 
     ui->fftComboBox->addItem("128");
     ui->fftComboBox->addItem("256");
@@ -60,6 +62,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this,SIGNAL(bwValueToDisplayThread(double)),&sm,SLOT(bwValueChanged(double)));
     connect(this,SIGNAL(fcValueToDisplayThread(double)),&sm,SLOT(fcValueChanged(double)));
     connect(this,SIGNAL(fsValueToDisplayThread(double)),&sm,SLOT(fsValueChanged(double)));
+    connect(this,SIGNAL(startfChanged(double)),&sm,SLOT(scanStartChanged(double)));
+    connect(this,SIGNAL(stopfChanged(double)),&sm,SLOT(scanStopChanged(double)));
+    connect(this,SIGNAL(scChanged(bool)),&sm,SLOT(scanChanged(bool)));
 
     // MainWindows to BufferReader connections
     connect(this,SIGNAL(stopBufferThread()),&br,SLOT(stopThread()));
@@ -67,20 +72,22 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this,SIGNAL(bwValueToDisplayThread(double)),&br,SLOT(bwValueChanged(double)));
     connect(this,SIGNAL(fcValueToDisplayThread(double)),&br,SLOT(fcValueChanged(double)));
 
+    // MainWindows to Demodulator
+    connect(this,SIGNAL(startDemodulation()),&demod,SLOT(demodStart()));
+    connect(this,SIGNAL(stopDemodulation()),&demod,SLOT(demodStop()));
+    connect(this,SIGNAL(demodTypeToDemodThread(demodTypes)),&demod,SLOT(demodTypeChanged(demodTypes)));
+
     // BufferReader to Demodulator connections
     connect(&br,SIGNAL(sendToDemod(short*,int)),&demod,SLOT(fillBuffer(short*,int)));
 
     // BufferReader to Demodulator connections
     connect(&br,SIGNAL(sendToSpectrum(short*,int)),&sm,SLOT(fillBuffer(short*,int)));
 
-    // MainWindows to Demodulator
-    connect(this,SIGNAL(startDemodulation()),&demod,SLOT(demodStart()));
-    connect(this,SIGNAL(stopDemodulation()),&demod,SLOT(demodStop()));
-    connect(this,SIGNAL(demodTypeToDemodThread(demodTypes)),&demod,SLOT(demodTypeChanged(demodTypes)));
-
     // SpectrumMonitor to MainWindow connections
     connect(&sm,SIGNAL(valueUpdate()),this,SLOT(displayThreadValueUpdate()));
 
+    // SpectrumMonitor to BufferReader connections
+    connect(&sm,SIGNAL(updateFc(double)),&br,SLOT(fcValueChanged(double)));
 }
 
 MainWindow::~MainWindow()
@@ -139,6 +146,7 @@ void MainWindow::displayThreadValueUpdate()
 {
     ui->plot->replot();
     ui->plot->repaint();
+    ui->plot->rescaleAxes();
 }
 
 void MainWindow::demodulateButtonClicked()
@@ -182,4 +190,17 @@ void MainWindow::demodTypeChanged()
    emit demodTypeToDemodThread(newDemodType);
 }
 
+void MainWindow::startFreqChanged()
+{
+    emit startfChanged(ui->spinbox_fstart->value());
+}
 
+void MainWindow::stopFreqChanged()
+{
+    emit stopfChanged(ui->spinbox_fstop->value());
+}
+
+void MainWindow::scanChanged()
+{
+    emit scChanged(ui->checkBox_scan->isChecked());
+}
